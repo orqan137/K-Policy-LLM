@@ -1,0 +1,20 @@
+# Large model artifacts should be added deliberately through Git LFS or releases.
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.gguf
+
+# Raw datasets and local runtime outputs.
+data/
+logs/
+tmp/
+cache/
+__pycache__/
+*.pyc
+
+# Local environment files.
+.venv/
+.env
+

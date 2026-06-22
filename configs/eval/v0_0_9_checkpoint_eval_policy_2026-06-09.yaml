@@ -1,0 +1,83 @@
+version: v0.0.9
+purpose: Korean politics and law LLM checkpoint monitoring
+
+training_time_eval:
+  public_eval:
+    enabled: true
+    default_mode: token_milestones_only
+    async_on_save: true
+    eval_cuda_visible_devices: "0"
+    eval_device: cuda:0
+    milestone_interval_tokens: 500000000
+    max_examples_per_benchmark: 50
+    monitor_metric: overall_avg
+    benchmarks:
+      - arc_challenge
+      - arc_easy
+      - boolq
+      - click
+      - commonsenseqa
+      - hellaswag
+      - kmmlu_pro
+      - kobalt_700
+      - mmlu
+      - mmlu_pro
+      - openbookqa
+      - truthfulqa_mc1
+      - winogrande
+
+candidate_checkpoint_suite:
+  command: scripts/evaluate_v0_0_9_checkpoint_suite.sh
+  run_for:
+    - first_500m_checkpoint
+    - each_1b_token_milestone
+    - checkpoint_best_public_macro
+    - checkpoint_final
+  components:
+    public_mcq_light:
+      required: true
+      metric: per_benchmark_accuracy_and_overall_avg
+    korean_politics_qualitative:
+      required: true
+      prompts: configs/04_eval/v0_0_9_korean_politics_qualitative_prompts_2026-06-09.jsonl
+      judge_axes:
+        - groundedness
+        - legal_term_precision
+        - source_gap_uncertainty
+        - privacy_redaction
+        - numeric_exactness
+        - policy_stance_balance
+        - long_context_honesty
+    generation_benchmarks:
+      required: false
+      default: disabled_during_training
+      reason: run manually for candidate milestones because generation eval can compete with training GPU time
+
+report_metrics:
+  learning_curve:
+    - train_loss
+    - perplexity
+    - tokens_seen
+    - tokens_per_second
+    - gpu_peak_memory_reserved_mb
+  architecture_runtime:
+    - micro_batch_size
+    - gradient_accumulation_steps
+    - seq_len
+    - vocab_size
+    - loss_chunk_tokens
+    - attention_backend
+  domain_quality:
+    - kmmlu_pro_accuracy
+    - kobalt_700_accuracy
+    - click_accuracy
+    - qualitative_groundedness_pass_rate
+    - qualitative_privacy_redaction_pass_rate
+    - qualitative_numeric_exactness_pass_rate
+
+known_constraints:
+  context_length: 4096
+  note: Long assembly minutes and legal bundles must be chunked or handled with retrieval in downstream evaluation.
+  resume_batch_lock: Exact trainer resume restores data_iterator state and should keep the same micro_batch_size.
+  vocab_lineage: 80K tokenizer changes the embedding/output head shape, so v0.0.9 is a separate scratch lineage from v0.0.8.
+  official_domain_warning: Dataset validation passes, but official primary domain ratio is below the preferred target; report this as source-volume limitation and cover with DAPT/SFT/RAG follow-up.

@@ -1,0 +1,22 @@
+model_type: llama
+architecture: decoder_only
+vocab_size: 80000
+hidden_size: 2048
+intermediate_size: 4096
+num_hidden_layers: 28
+num_attention_heads: 16
+num_key_value_heads: 8
+head_dim: 128
+max_position_embeddings: 8192
+rope_theta: 10000.0
+rms_norm_eps: 1.0e-5
+attention_dropout: 0.0
+hidden_dropout: 0.0
+initializer_range: 0.02
+tie_word_embeddings: true
+precision: bf16
+notes:
+  - v0.0.9 80K long-context scratch candidate.
+  - Same dense decoder-only 1.2B architecture as the 4096-token v0.0.9 config, but raises max_position_embeddings to 8192.
+  - Requires an 8192-token packed dataset; changing this config alone does not train long-context behavior.
+  - Intended for Korean politics/law documents where bills, committee minutes, and legal reasoning often exceed 4096 tokens.

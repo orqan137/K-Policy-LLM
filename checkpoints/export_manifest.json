@@ -1,0 +1,45 @@
+{
+  "created_at_utc": "2026-06-15T12:28:04Z",
+  "checkpoint_dir": "results/02_training_runs/v0_0_9_14p5b_pt_v2_cpt_sft_dpo_1epoch_mb8_2026-06-15_110259/checkpoint_final",
+  "tokenizer_dir": "/DATA/castle/project/projects/make_llm/data/04_tokenizer/v0_0_9_80k_15shard_official_2026-06-08_092211",
+  "output_dir": "results/04_exports/hf/v0_0_9_14p5b_pt_v2_cpt_sft_dpo_1epoch_mb8_2026-06-15_1228",
+  "format": "hf_transformers_with_sentencepiece",
+  "files": [
+    {
+      "source": "results/02_training_runs/v0_0_9_14p5b_pt_v2_cpt_sft_dpo_1epoch_mb8_2026-06-15_110259/checkpoint_final/config.json",
+      "target": "results/04_exports/hf/v0_0_9_14p5b_pt_v2_cpt_sft_dpo_1epoch_mb8_2026-06-15_1228/config.json",
+      "sha256": "1afb0791fcc3874cf29fb0547fdba864def653c655ed04248876c121f65f2f15",
+      "bytes": 745
+    },
+    {
+      "source": "results/02_training_runs/v0_0_9_14p5b_pt_v2_cpt_sft_dpo_1epoch_mb8_2026-06-15_110259/checkpoint_final/generation_config.json",
+      "target": "results/04_exports/hf/v0_0_9_14p5b_pt_v2_cpt_sft_dpo_1epoch_mb8_2026-06-15_1228/generation_config.json",
+      "sha256": "82d9d6a0672c60c28be3819d7e83258a758cce1ee1596ef775b14868da1f5e67",
+      "bytes": 216
+    },
+    {
+      "source": "results/02_training_runs/v0_0_9_14p5b_pt_v2_cpt_sft_dpo_1epoch_mb8_2026-06-15_110259/checkpoint_final/model.safetensors",
+      "target": "results/04_exports/hf/v0_0_9_14p5b_pt_v2_cpt_sft_dpo_1epoch_mb8_2026-06-15_1228/model.safetensors",
+      "sha256": "f4ab704b77ebc5caf901275a08756e2a9bc1d59d316ffa1bd221840926faeeba",
+      "bytes": 2441872016
+    },
+    {
+      "source": "/DATA/castle/project/projects/make_llm/data/04_tokenizer/v0_0_9_80k_15shard_official_2026-06-08_092211/tokenizer.model",
+      "target": "results/04_exports/hf/v0_0_9_14p5b_pt_v2_cpt_sft_dpo_1epoch_mb8_2026-06-15_1228/tokenizer.model",
+      "sha256": "313f809870a4e0edb688a5de36e985a3d1e1a688b9b8bb385e600aca5a12b297",
+      "bytes": 1519218
+    },
+    {
+      "source": "/DATA/castle/project/projects/make_llm/data/04_tokenizer/v0_0_9_80k_15shard_official_2026-06-08_092211/tokenizer.vocab",
+      "target": "results/04_exports/hf/v0_0_9_14p5b_pt_v2_cpt_sft_dpo_1epoch_mb8_2026-06-15_1228/tokenizer.vocab",
+      "sha256": "881f3be3c5bee589bd904d33ed9d8336ed8276dc7d0335fb68b8b1d4cc624b5a",
+      "bytes": 1425582
+    },
+    {
+      "source": "/DATA/castle/project/projects/make_llm/data/04_tokenizer/v0_0_9_80k_15shard_official_2026-06-08_092211/tokenizer.manifest.json",
+      "target": "results/04_exports/hf/v0_0_9_14p5b_pt_v2_cpt_sft_dpo_1epoch_mb8_2026-06-15_1228/tokenizer.manifest.json",
+      "sha256": "665755b3003c9b3334e6c95f032e7af62ce0008979cb353e0672e2d4f560d867",
+      "bytes": 1049
+    }
+  ]
+}

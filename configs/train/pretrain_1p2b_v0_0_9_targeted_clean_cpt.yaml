@@ -1,0 +1,35 @@
+run_type: pretrain_1p2b_v0_0_9_targeted_clean_cpt
+run_id_prefix: pretrain_1p2b_v0_0_9_targeted_clean_cpt
+model_config: /DATA/castle/projects/make_llm/configs/02_model/make_llm_1.2b_v0_0_9_80k.yaml
+tokenizer_path: /DATA/castle/projects/make_llm/data/04_tokenizer/v0_0_9_80k_15shard_official_2026-06-08_092211/tokenizer.model
+train_data: /DATA/castle/projects/make_llm/data/05_datasets/cpt/v0_0_9_targeted_clean_cpt_80k_2026-06-15_0134/combined_2048_shuffle
+output_root: /DATA/castle/projects/make_llm/results/02_training_runs
+seq_len: 2048
+micro_batch_size: 1
+gradient_accumulation_steps: 8
+max_steps: 4408
+max_optimizer_steps_override: 551
+learning_rate: 1.0e-5
+weight_decay: 0.1
+warmup_steps: 0
+lr_schedule: constant
+precision: bf16
+gradient_checkpointing: true
+flash_attention: true
+attention_backend: flash_attention_2
+optimizer_fused: true
+allow_tf32: true
+float32_matmul_precision: high
+torch_compile: false
+packing: true
+save_every_steps: 1104
+log_every_steps: 10
+loss_chunk_tokens: 256
+seed: 42
+notes:
+  - v0.0.9 clean CPT stage before targeted SFT and DPO.
+  - Uses only the v0.0.9 80K tokenizer lineage.
+  - Packed CPT source is built from cpt_lawbook, cpt_policy_opendataloader_clean, cpt_policy_synthetic, and cpt_policy_raw_clean.
+  - Noisy dapt/election-policy raw bucket is excluded.
+  - cpt_policy_synthetic is used for policy-document style only and must not be cited as factual source.
+  - combined_2048_shuffle has 4408 blocks and 9027584 tokens; max_steps 4408 consumes one pass and aligns to gradient_accumulation_steps.

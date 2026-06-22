@@ -1,0 +1,14 @@
+run_type: dpo
+base_model_path: /DATA/castle/projects/make_llm/data/06_checkpoints/sft
+train_data: /DATA/castle/projects/make_llm/data/05_datasets/dpo/train.jsonl
+eval_data: /DATA/castle/projects/make_llm/data/05_datasets/dpo/valid.jsonl
+output_root: /DATA/castle/projects/make_llm/results/02_training_runs
+seq_len: 4096
+micro_batch_size: 1
+gradient_accumulation_steps: 16
+learning_rate: 5.0e-6
+beta: 0.1
+precision: bf16
+gradient_checkpointing: true
+reference_model_strategy: precomputed_or_shared_when_possible
+seed: 42

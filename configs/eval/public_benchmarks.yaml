@@ -1,0 +1,60 @@
+benchmarks:
+  - benchmark_id: kmmlu_pro
+    display_name: KMMLU-Pro
+    repo_id: LGAI-EXAONE/KMMLU-Pro
+    repo_type: dataset
+    revision: main
+    gated: true
+    license_note: "Hugging Face gated dataset; non-commercial acknowledgement is required before download."
+    expected_size: 2822
+    task_type: multiple_choice
+    split: test
+    metric: accuracy
+    local_dir: /DATA/castle/common/datasets/eval_benchmarks/kmmlu_pro
+    source_url: https://huggingface.co/datasets/LGAI-EXAONE/KMMLU-Pro
+    paper_url: https://arxiv.org/abs/2507.08924
+    notes:
+      - "Professional Korean benchmark from Korean National Professional Licensure exams."
+      - "Do not include in tokenizer, pretraining, SFT, DPO, or internal prompt generation."
+
+  - benchmark_id: kobalt_700
+    display_name: KoBALT-700
+    repo_id: snunlp/KoBALT-700
+    repo_type: dataset
+    revision: main
+    gated: false
+    expected_size: 700
+    task_type: multiple_choice
+    split: default
+    metric: accuracy
+    answer_format: "정답은 X입니다."
+    local_dir: /DATA/castle/common/datasets/eval_benchmarks/kobalt_700
+    source_url: https://huggingface.co/datasets/snunlp/KoBALT-700
+    protocol_url: https://huggingface.co/datasets/snunlp/KoBALT-700/blob/main/evaluation_protocol.md
+    paper_url: https://arxiv.org/abs/2505.16125
+    notes:
+      - "Linguistics-focused Korean benchmark with syntax, semantics, pragmatics, phonetics/phonology, morphology domains."
+      - "Items with sampling_YN=1 are reserved for human preference tests and must not be included in public benchmark evaluation."
+
+  - benchmark_id: click
+    display_name: CLIcK
+    repo_id: taeminlee/CLIcK
+    repo_type: dataset
+    revision: main
+    gated: false
+    expected_size: 1995
+    task_type: multiple_choice
+    split: default
+    metric: accuracy
+    local_dir: /DATA/castle/common/datasets/eval_benchmarks/click
+    source_url: https://huggingface.co/datasets/taeminlee/CLIcK
+    original_source_url: https://huggingface.co/datasets/EunsuKim/CLIcK
+    paper_url: https://arxiv.org/abs/2403.06412
+    notes:
+      - "Korean cultural and linguistic intelligence benchmark; includes Korean Politics, Economy, Law, History, Society, and language categories."
+      - "Use only as evaluation, never as pretraining or SFT data."
+
+output:
+  project_eval_root: /DATA/castle/projects/make_llm/data/05_datasets/eval/public_benchmarks
+  result_root: /DATA/castle/projects/make_llm/results/03_evals/public_benchmarks
+  cache_policy: "Official snapshots live under /DATA/castle/common/datasets/eval_benchmarks; project-local files contain manifests and normalized eval views only."

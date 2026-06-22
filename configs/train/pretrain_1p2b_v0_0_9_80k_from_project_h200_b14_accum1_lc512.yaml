@@ -1,0 +1,38 @@
+run_type: pretrain_1p2b_v0_0_9_80k_from_project_h200_b14_accum1_lc512
+run_id_prefix: pretrain_1p2b_v0_0_9_80k_from_project_h200_b14_accum1_lc512
+model_config: /DATA/castle/project/projects/make_llm/configs/02_model/make_llm_1.2b_v0_0_9_80k.yaml
+tokenizer_path: /DATA/castle/project/projects/make_llm/data/04_tokenizer/v0_0_9_80k_15shard_official_2026-06-08_092211/tokenizer.model
+train_data: /DATA/castle/project/projects/make_llm/data/05_datasets/pretrain/v0_0_9_80k_mapreduce_ratio_fineweb2_15shards_2026-06-09_023724_fast24_1p25
+output_root: /DATA/castle/projects/make_llm/results/02_training_runs
+seq_len: 4096
+micro_batch_size: 14
+gradient_accumulation_steps: 1
+max_steps: 544253
+max_optimizer_steps_override: 544253
+learning_rate: 2.0e-4
+weight_decay: 0.1
+warmup_steps: 1755
+lr_schedule: cosine
+precision: bf16
+gradient_checkpointing: false
+flash_attention: true
+attention_backend: flash_attention_2
+optimizer_fused: true
+allow_tf32: true
+float32_matmul_precision: high
+torch_compile: true
+torch_compile_mode: max-autotune-no-cudagraphs
+packing: true
+save_every_steps: 1755
+eval_every_steps: 1755
+log_every_steps: 10
+loss_chunk_tokens: 512
+seed: 42
+notes:
+  - v0.0.9 80K scratch pretraining config using rsync-received assets under /DATA/castle/project.
+  - Runtime code and results stay under /DATA/castle/projects/make_llm; tokenizer, model config, and token pack are read from /DATA/castle/project/projects/make_llm.
+  - Dataset packed_tokens is 31,209,664,512; max_steps covers 31,209,644,032 tokens with 20,480 tokens left over.
+  - micro_batch_size 14 and gradient_accumulation_steps 1 use 57,344 tokens/update.
+  - save_every_steps/eval_every_steps 1,755 preserve an approximately 100,638,720-token recovery/eval interval.
+  - b14 is the preferred H200 candidate after smoke because v0.0.9 80K vocab increases logit memory versus v0.0.8.
+  - This config intentionally has no stop_after_seconds cap.

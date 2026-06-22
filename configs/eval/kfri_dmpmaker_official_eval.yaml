@@ -1,0 +1,98 @@
+protocol_id: kfri_dmpmaker_official_eval_v1
+target_name: kfri-dmpmaker
+project_root: /DATA/castle/projects/make_llm
+python: /DATA/castle/envs/make_llm/.venv/bin/python
+launcher: /DATA/castle/projects/make_llm/scripts/evaluate_kfri_dmpmaker_official_suite.sh
+
+default_checkpoint:
+  run_alias: kfri-dmpmaker
+  lineage_source_run: pretrain_1p2b_v0_0_9_80k_from_project_h200_b14_accum1_lc512_2026-06-09_150042
+  checkpoint_alias: checkpoint_tokens_013500m
+  checkpoint_dir: /DATA/castle/projects/make_llm/results/02_training_runs/pretrain_1p2b_v0_0_9_80k_from_project_h200_b14_accum1_lc512_2026-06-09_150042/checkpoint_tokens_013500m
+  tokenizer_preferred: /DATA/castle/projects/make_llm/data/04_tokenizer/v0_0_9_80k_15shard_official_2026-06-08_092211/tokenizer.model
+  tokenizer_current_fallback: /DATA/castle/project/projects/make_llm/data/04_tokenizer/v0_0_9_80k_15shard_official_2026-06-08_092211/tokenizer.model
+
+official_benchmark_snapshot:
+  root: /DATA/castle/projects/make_llm/results/03_evals/official_hf_downloads/extended_mcq_en_ko_2026-06-10_124209/normalized
+  manifest: /DATA/castle/projects/make_llm/results/03_evals/official_hf_downloads/extended_mcq_en_ko_2026-06-10_124209/manifest.json
+  leakage_policy: eval_only_never_train_tokenizer_sft_dpo_or_synthetic_generation
+  benchmarks:
+    - arc_challenge
+    - arc_easy
+    - boolq
+    - click
+    - commonsenseqa
+    - haerae_bench_1p1_mcq
+    - hellaswag
+    - kmmlu
+    - kmmlu_hard
+    - kmmlu_pro
+    - kobalt_700
+    - kobest_boolq
+    - kobest_copa
+    - kobest_hellaswag
+    - kobest_sentineg
+    - kobest_wic
+    - mmlu
+    - mmlu_pro
+    - openbookqa
+    - winogrande
+
+components:
+  public_light:
+    enabled_by_default: true
+    max_examples_per_benchmark: 50
+    purpose: fast sanity check using the project-local normalized public benchmark view
+  official_next_token:
+    enabled_by_default: true
+    scoring: zero_shot_next_token_option_letter_logprob
+    purpose: primary comparable metric for pretraining checkpoints
+  choice_text_likelihood:
+    enabled_by_default: true
+    max_examples_per_benchmark: 5000
+    benchmarks:
+      - mmlu
+      - mmlu_pro
+      - kmmlu
+      - kmmlu_hard
+      - kmmlu_pro
+      - boolq
+      - click
+    purpose: calibration check that scores full choice text by sum and average log probability
+  option_permutation:
+    enabled_by_default: true
+    seeds:
+      - 101
+      - 202
+      - 303
+    benchmarks:
+      - mmlu
+      - mmlu_pro
+      - kmmlu
+      - kmmlu_hard
+      - kmmlu_pro
+      - boolq
+      - click
+    purpose: detect option-letter and answer-position bias
+  qualitative_samples:
+    enabled_by_default: true
+    prompts: /DATA/castle/projects/make_llm/configs/04_eval/v0_0_9_korean_politics_qualitative_prompts_2026-06-09.jsonl
+    purpose: grounded Korean politics/legal behavior inspection; not an official numeric score
+
+resource_guard:
+  min_mem_available_gib: 64
+  min_gpu_free_mib: 20000
+  allow_override_env:
+    - ALLOW_LOW_MEMORY=1
+    - ALLOW_LOW_GPU_MEMORY=1
+  dry_run_env: DRY_RUN=1
+
+outputs:
+  root_template: /DATA/castle/projects/make_llm/results/03_evals/kfri_dmpmaker_official/{checkpoint_alias}/{timestamp}
+  required_files:
+    - commands.sh
+    - suite_manifest.json
+    - suite_summary.csv
+    - suite_summary.md
+    - qualitative/summary.json
+    - logs/

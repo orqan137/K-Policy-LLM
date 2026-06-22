@@ -1,0 +1,13 @@
+run_type: sft
+base_model_path: /DATA/castle/projects/make_llm/data/06_checkpoints/base
+train_data: /DATA/castle/projects/make_llm/data/05_datasets/sft/train.jsonl
+eval_data: /DATA/castle/projects/make_llm/data/05_datasets/sft/valid.jsonl
+output_root: /DATA/castle/projects/make_llm/results/02_training_runs
+seq_len: 4096
+micro_batch_size: 1
+gradient_accumulation_steps: 16
+learning_rate: 1.0e-5
+precision: bf16
+gradient_checkpointing: true
+packing: true
+seed: 42

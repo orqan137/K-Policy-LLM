@@ -1,0 +1,62 @@
+version: v0.0.9
+purpose: official scratch tokenizer for the Korean political/legal/policy chatbot lineage
+tokenizer_type: sentencepiece_bpe
+model_type: bpe
+vocab_size: 80000
+character_coverage: 0.9995
+byte_fallback: true
+normalization_rule_name: identity
+add_dummy_prefix: false
+hard_vocab_limit: false
+input_sentence_size: 2000000
+max_sentence_length: 131072
+num_threads: 24
+train_extremely_large_corpus: true
+input_policy:
+  corpus_builder: /DATA/castle/projects/make_llm/scripts/build_v0_0_9_tokenizer_corpus.py
+  split: train
+  target_chars: 3000000000
+  fineweb2_kor_hang_shards: 15
+  exact_dedup_policy: sha256(remove_all_whitespace(text))
+  safety_filters:
+    drop_safety_patterns: true
+    drop_mojibake_suspect: true
+  eval_leakage_policy: tokenizer corpus must not read public benchmark, eval, sft, dpo, preference, or rl prompt paths
+special_token_ids:
+  pad: 0
+  unk: 1
+  bos: 2
+  eos: 3
+special_tokens:
+  bos: <bos>
+  eos: <eos>
+  pad: <pad>
+  unk: <unk>
+user_defined_symbols:
+  - <|system|>
+  - <|user|>
+  - <|assistant|>
+  - <|end|>
+  - <|context|>
+  - <|question|>
+  - <|answer|>
+  - <|evidence|>
+  - <|think|>
+  - <|final|>
+  - <|verify|>
+  - <|claim|>
+  - <|stance|>
+  - <|url|>
+  - <|email|>
+  - <|phone|>
+  - <|rrn|>
+  - <|address|>
+  - <|person|>
+  - <|org|>
+model_config: /DATA/castle/projects/make_llm/configs/02_model/make_llm_1.2b_v0_0_9_80k.yaml
+output_root: /DATA/castle/projects/make_llm/data/04_tokenizer
+audit:
+  script: /DATA/castle/projects/make_llm/scripts/audit_v0_0_9_tokenizer.py
+  expected_vocab_size: 80000
+  max_probe_byte_fallback_ratio: 0.02
+  max_group_byte_fallback_ratio: 0.05
